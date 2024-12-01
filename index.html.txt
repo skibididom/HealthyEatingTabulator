@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel to Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Excel Sheet Functionality in a Website</h1>
+
+        <h2>Input Section</h2>
+        <form id="inputForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required><br><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" required><br><br>
+
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" step="0.1" required><br><br>
+
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" step="0.1" required><br><br>
+
+            <button type="button" class="button" onclick="calculateResults()">Calculate</button>
+        </form>
+
+        <div class="results" id="resultsSection" style="display: none;">
+            <h2>Results</h2>
+            <p><strong>BMI Score:</strong> <span id="bmi"></span></p>
+            <p><strong>BMR (Calories/day):</strong> <span id="bmr"></span></p>
+            <p><strong>Status:</strong> <span id="status"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateResults() {
+            // Get input values
+            const name = document.getElementById("name").value;
+            const age = parseInt(document.getElementById("age").value, 10);
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+
+            // BMI calculation
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+
+            // BMR calculation (Mifflin-St Jeor Equation for males)
+            const bmr = (10 * weight + 6.25 * height - 5 * age + 5).toFixed(2);
+
+            // Status determination
+            let status;
+            if (bmi < 18.5) {
+                status = "Underweight";
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                status = "Normal weight";
+            } else if (bmi >= 25 && bmi < 29.9) {
+                status = "Overweight";
+            } else {
+                status = "Obesity";
+            }
+
+            // Display results
+            document.getElementById("bmi").innerText = bmi;
+            document.getElementById("bmr").innerText = bmr;
+            document.getElementById("status").innerText = status;
+
+            // Show the results section
+            document.getElementById("resultsSection").style.display = "block";
+        }
+    </script>
+</body>
+</html>
